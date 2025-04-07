@@ -1,0 +1,40 @@
+import pandas as pd
+from scipy.stats import zscore
+
+df = pd.read_csv("your_dataset.csv")
+
+print("Initial Shape:", df.shape)
+print(df.info())
+print(df.head())
+
+num_cols = df.select_dtypes(include=['float64', 'int64']).columns
+for col in num_cols:
+    df[col] = df[col].fillna(df[col].mean())
+
+cat_cols = df.select_dtypes(include=['object']).columns
+for col in cat_cols:
+    df[col] = df[col].fillna('Unknown')
+
+df = df.drop_duplicates()
+
+if 'gender' in df.columns:
+    df['gender'] = df['gender'].str.strip().str.lower().replace({
+        'm': 'male', 'f': 'female'
+    })
+
+if 'signup_date' in df.columns:
+    df['signup_date'] = pd.to_datetime(df['signup_date'], errors='coerce')
+
+df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+if 'age' in df.columns:
+    df['age'] = df['age'].fillna(0).astype(int)
+
+if 'income' in df.columns:
+    df = df[(zscore(df['income']) < 3)]
+
+print("Final Shape:", df.shape)
+print(df.info())
+
+df.to_csv("cleaned_dataset.csv", index=False)
+print("Cleaned dataset saved as cleaned_dataset.csv")
