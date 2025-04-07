@@ -4,7 +4,7 @@ This repository contains a Python script used to clean a dataset (`your_dataset.
 
 ## 📁 Input
 
-- **your_dataset.csv**: Raw dataset file to be cleaned (should be placed in the same directory as the script).
+- **sales_data.csv**: Raw dataset file to be cleaned (should be placed in the same directory as the script).
 
 ## 📄 Overview of Cleaning Steps
 
